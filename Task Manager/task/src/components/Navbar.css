@@ -1,0 +1,140 @@
+/* ------------------------------------
+   NAVBAR MAIN
+------------------------------------- */
+.navbar {
+  width: 99%;
+  padding: 5px 10px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  box-shadow: 0 4px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+/* ------------------------------------
+   NAV LINKS (DESKTOP)
+------------------------------------- */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  padding-left: 20px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #1f2937;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: #2563eb;
+}
+
+.logout-btn {
+  cursor: pointer;
+  font-weight: 600;
+  color: #dc2626;
+}
+
+.logout-btn:hover {
+  color: #b91c1c;
+}
+
+/* ------------------------------------
+   HAMBURGER BUTTON
+------------------------------------- */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 30px;
+  height: 3px;
+  background: #1f2937;
+  border-radius: 5px;
+  transition: 0.3s ease;
+  padding-left: 40px;
+}
+
+/* Hamburger animation */
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* ------------------------------------
+   MOBILE RESPONSIVE MENU
+------------------------------------- */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 20px;
+
+    /* Animation */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease-out, padding 0.3s ease-out;
+  }
+
+  .nav-links.active {
+    max-height: 300px;
+    padding: 20px 0;
+  }
+
+  .nav-links li {
+    font-size: 17px;
+    padding: 10px 0;
+  }
+}
+
+/* ------------------------------------
+   EXTRA SMALL SCREENS
+------------------------------------- */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .hamburger span {
+    width: 26px;
+  }
+}

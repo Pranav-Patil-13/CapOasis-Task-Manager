@@ -1,0 +1,42 @@
+[
+  {
+    "_id": "1764675324285",
+    "name": "mahesh",
+    "email": "misalmahesh03@gmail.com",
+    "password": "$2a$10$W/G6.zWf8o9VBWIpiQw8YODdoERYnuUAQYUe9qpBad6ChhInNrcNO",
+    "role": "employee",
+    "createdAt": "2025-12-02T11:35:24.285Z"
+  },
+  {
+    "_id": "1764675371826",
+    "name": "Anurag",
+    "email": "anu.capoasis@gmail.com",
+    "password": "$2a$10$ePzVO3pABKGlvKJTR67esujI0E/NvO3mxJoXWHEDPJlg2M4ZevweC",
+    "role": "admin",
+    "createdAt": "2025-12-02T11:36:11.826Z"
+  },
+  {
+    "_id": "1764823191591",
+    "name": "Mahesh Misal",
+    "email": "misalmahesh3475@gmail.com",
+    "password": "$2a$10$KosB2dX3yyU7ySrfN8vU5OybUcq43/oIqcVoENaLzeGNM4lRFBIKG",
+    "role": "employee",
+    "createdAt": "2025-12-04T04:39:51.591Z"
+  },
+  {
+    "_id": "1764823722368",
+    "name": "huricane",
+    "email": "john@gmail.com",
+    "password": "$2a$10$h9JvBDKSTlrKz5ODUfGtNOtc40MeDdlr1i7EoNNn5NAeD4Fqz8Xc.",
+    "role": "employee",
+    "createdAt": "2025-12-04T04:48:42.368Z"
+  },
+  {
+    "_id": "1765344573815",
+    "name": "ram",
+    "email": "ram@gmail.com",
+    "password": "$2a$10$g4VwpdGS0dYqyYJlqAnyu.bKbsJhX2jTV68k5fl5DpR9sZdeX41cG",
+    "role": "employee",
+    "createdAt": "2025-12-10T05:29:33.815Z"
+  }
+]
