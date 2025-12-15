@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/employee.css') }}">
+</head>
+
+<body>
+
+    <div class="employee-wrapper">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar-admin">
+            <div class="admin-logo">
+                <h2>Task Manager</h2>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="#" id="empNavDashboard" class="active">Dashboard</a>
+                <a href="#" id="empNavTasks">My Tasks</a>
+                <a href="#" id="empNavAnnouncements">Announcements</a>
+                <a href="#" id="empNavFiles">Files</a>
+            </nav>
+
+            <div class="admin-logout">
+                <a href="#" id="empLogout">Logout</a>
+            </div>
+        </aside>
+
+        <!-- ================= CONTENT ================= -->
+        <main class="content-area">
+
+            <!-- DASHBOARD -->
+            <section id="empPageDashboard" class="page-section">
+                <h2>Employee Dashboard</h2>
+
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h2 id="cardTotal">0</h2>
+                        <p>Total Tasks</p>
+                    </div>
+                    <div class="card">
+                        <h2 id="cardPending">0</h2>
+                        <p>Pending</p>
+                    </div>
+                    <div class="card">
+                        <h2 id="cardProgress">0</h2>
+                        <p>In Progress</p>
+                    </div>
+                    <div class="card">
+                        <h2 id="cardCompleted">0</h2>
+                        <p>Completed</p>
+                    </div>
+                </div>
+
+                <div class="dash-grid">
+
+                    <div class="dash-block">
+                        <h3>Priority Tasks</h3>
+                        <ul id="priorityTasks"></ul>
+                    </div>
+
+                    <div class="dash-block">
+                        <h3>Task Status</h3>
+
+                        <div class="progress-rings">
+
+                            <div class="ring completed" data-tooltip="">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="bg" d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="progress" stroke-dasharray="0,100" id="ringCompleted" d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span id="completedPercent">0%</span>
+                                <p>Completed</p>
+                            </div>
+
+                            <div class="ring progress" data-tooltip="">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="bg"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="progress" stroke-dasharray="0,100" id="ringProgress"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span id="progressPercent">0%</span>
+                                <p>In Progress</p>
+                            </div>
+
+                            <div class="ring pending" data-tooltip="">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="bg"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="progress" stroke-dasharray="0,100" id="ringPending"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span id="pendingPercent">0%</span>
+                                <p>Not Started</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="dash-block">
+                        <h3>Weekly Completion Trend</h3>
+                        <svg id="weeklyTrend" viewBox="0 0 300 100" preserveAspectRatio="none">
+                            <polyline id="trendLine" fill="none" stroke="#2563eb" stroke-width="3" points="" />
+                            <g id="trendDots"></g>
+                        </svg>
+
+                        <p id="weekComparison" style="margin-top:10px;font-size:16px;color:#374151;"></p>
+                        <div class="trend-labels" id="trendLabels"></div>
+                    </div>
+
+                    <div class="dash-block">
+                        <h3>Recent Updates</h3>
+                        <ul id="recentUpdates"></ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- TASKS -->
+            <section id="empPageTasks" class="page-section" style="display:none;">
+                <h2>My Tasks</h2>
+
+                <table id="tasksTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Due</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- ANNOUNCEMENTS -->
+            <section id="empPageAnnouncements" class="page-section" style="display:none;">
+                <h2>Announcements</h2>
+                <ul id="announcementsList"></ul>
+            </section>
+
+            <!-- FILES -->
+            <section id="empPageFiles" class="page-section" style="display:none;">
+                <h2>Files</h2>
+                <ul id="filesList"></ul>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/employee.js') }}"></script>
+</body>
+
+</html>
