@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Task Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+
+            <div class="brand">
+                <h1>Capoasis</h1>
+                <p class="brand-tagline">Task Management Simplified</p>
+            </div>
+
+            <div class="auth-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="you@capoasis.com">
+                </div>
+
+                <div class="remember-row">
+    <label class="remember-check">
+        <input type="checkbox" id="rememberMe">
+        <span>Remember me</span>
+    </label>
+</div>
+
+                <div class="form-group password-group">
+    <label>Password</label>
+    <div class="password-wrapper">
+        <input type="password" id="password" placeholder="••••••••">
+        <span id="togglePassword" class="eye">👁️</span>
+    </div>
+</div>
+
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="role">
+                        <option value="employee">Employee</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+
+                <button id="loginBtn" class="login-btn">Sign In</button>
+
+                <p id="msg" class="auth-msg"></p>
+            </div>
+
+            <div class="auth-footer">
+                Made with ♥️ by team <strong>Grow</strong>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- GLOBAL LOADER -->
+    <div id="globalLoader" class="loader-overlay" style="display:none;">
+        <div class="dot-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
