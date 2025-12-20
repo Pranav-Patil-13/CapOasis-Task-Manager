@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="admin-wrapper">
+
+        <div class="sidebar-admin">
+            <div class="admin-logo">
+                <h2>Task Manager</h2>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="#" id="navDashboard" class="active">Dashboard</a>
+                <a href="#" id="navEmployees">Employees</a>
+                <a href="#" id="navTasks">Assign Tasks</a>
+                <a href="#" id="navFiles">Files</a>
+                <a href="#" id="navAnnouncements">Announcements</a>
+                <a href="#" id="navAttendance">Attendance</a>
+                <a href="#" id="navApprovals">📝 Approvals</a>
+                <a href="#" id="navSettings">Activity Log</a>
+            </nav>
+
+            <div class="admin-logout">
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+
+        <div id="pageDashboard" class="dashboard-container page-section">
+            <div class="dash-block">
+                <div class="dashboard-cards">
+                    <div class="card" id="cardEmployees">
+                        <h2>0</h2>
+                        <p>Total Employees</p>
+                    </div>
+                    <div class="card" id="cardTasks">
+                        <h2>0</h2>
+                        <p>Total Tasks</p>
+                    </div>
+                    <div class="card" id="cardPending">
+                        <h2>0</h2>
+                        <p>Pending Tasks</p>
+                    </div>
+                    <div class="card" id="cardCompleted">
+                        <h2>0</h2>
+                        <p>Completed Tasks</p>
+                    </div>
+
+                    <div class="card" id="cardOverdue">
+                        <h2>0</h2>
+                        <p>Overdue Tasks</p>
+                    </div>
+
+                    <div class="card" id="cardToday">
+                        <h2>0</h2>
+                        <p>Due Today</p>
+                    </div>
+
+                    <div class="card" id="cardWeek">
+                        <h2>0</h2>
+                        <p>Due This Week</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="dash-block">
+                <div class="section assign-task">
+                    <h3>Assign Task</h3>
+                    <input type="text" id="taskTitle" placeholder="Task Title">
+                    <input type="text" id="taskDesc" placeholder="Task Description">
+                    <input type="date" id="taskDue">
+                    <select id="assignedTo">
+                        <option value="">Select Employee</option>
+                    </select>
+                    <button id="assignBtn" class="button-full section-button">Assign Task</button>
+                    <p id="taskMsg"></p>
+                </div>
+            </div>
+
+            <div class="dash-block">
+                <div class="section">
+                    <h3>Recent Activity</h3>
+                    <ul id="adminActivityList"></ul>
+                </div>
+            </div>
+
+            <div class="dash-block">
+                <div class="section admin-task-table">
+                    <h3>All Tasks</h3>
+
+                    <div class="task-filters">
+                        <select id="filterStatus">
+                            <option value="">All Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+
+                        <select id="filterEmployee">
+                            <option value="">All Employees</option>
+                        </select>
+                    </div>
+
+                    <table class="task-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Employee</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTaskBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dash-block">
+                <div class="section reg-emp">
+                    <h3>Register New Employee</h3>
+                    <input type="text" id="empName" placeholder="Name">
+                    <input type="email" id="empEmail" placeholder="Email">
+                    <input type="password" id="empPassword" placeholder="Password">
+                    <button class="button-full" id="registerBtn">Register</button>
+                    <p id="registerMsg"></p>
+                </div>
+            </div>
+
+
+
+            <div class="dash-block">
+                <div class="section announcement">
+                    <h3>Announcements</h3>
+                    <input type="text" id="annTitle" placeholder="Title">
+                    <input type="text" id="annMsg" placeholder="Message">
+                    <button class="button-full" id="announceBtn">Post Announcement</button>
+                    <p id="annMsgText"></p>
+                </div>
+            </div>
+
+            <div class="dash-block">
+                <div class="section file-upl">
+                    <h3>Upload Files</h3>
+
+                    <div class="upl-options">
+
+                        <div class="upload-block">
+                            <h4>Upload For Everyone</h4>
+                            <input type="file" id="fileUploadAll">
+                            <button id="uploadBtnAll" class="button-full">Upload (All)</button>
+                            <p id="fileMsgAll"></p>
+                        </div>
+
+                        <hr style="margin:20px 0;">
+
+                        <div class="upload-block">
+                            <h4>Upload For Specific Employee</h4>
+
+                            <select id="shareFileEmployee">
+                                <option value="">Select Employee</option>
+                            </select>
+
+                            <input type="file" id="fileUploadSpecific">
+                            <button id="uploadBtnSpecific" class="button-full">Upload (Specific)</button>
+                            <p id="fileMsgSpecific"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="pageEmployees" class="page-section" style="display:none;">
+            <div class="employees-section navSubsection">
+                <h3>Employees</h3>
+                <br>
+                <div class="search-refresh">
+                    <input id="empSearch" type="text" placeholder="Search employees" style="width:320px; margin:0;">
+                    <button id="refreshEmployeesBtn">Refresh</button>
+                </div>
+
+                <div class="subContent">
+                    <table id="employeesTable" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="employeeModal" class="modal" style="display:none;">
+                <div class="modal-content" style="width:420px;">
+                    <span class="close-employee-modal" style="float:right; cursor:pointer;">&times;</span>
+                    <h3 id="empModalTitle">Edit Employee</h3>
+
+                    <div>
+                        <label>Name</label>
+                        <input id="empModalName" type="text">
+                    </div>
+
+                    <div>
+                        <label>Email</label>
+                        <input id="empModalEmail" type="email">
+                    </div>
+
+                    <div>
+                        <label>Role</label>
+                        <select id="empModalRole">
+                            <option value="employee">Employee</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div style="display:flex; gap:8px; justify-content:flex-end;">
+                        <button id="empDeleteBtn" class="delete-btn">Delete</button>
+                        <button id="empSaveBtn" class="save-btn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pageTasks" class="page-section" style="display:none;">
+            <div class="tasks-section navSubsection">
+                <h3>All Tasks</h3>
+
+                <div class="subContent">
+
+                    <div class="task-pills">
+                        <button class="pill active" data-filter="all">All</button>
+                        <button class="pill" data-filter="Pending">Pending</button>
+                        <button class="pill" data-filter="In Progress">In Progress</button>
+                        <button class="pill" data-filter="Completed">Completed</button>
+                        <button class="pill" data-filter="Overdue">Overdue</button>
+                    </div>
+
+                    <table class="task-table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Employee</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksPageBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="pageFiles" class="page-section" style="display:none;">
+            <div class="files-section navSubsection">
+                <h3>Uploaded Files</h3>
+
+                <div class="file-filters">
+                    <button class="file-filter active" data-filter="all">All Files</button>
+                    <button class="file-filter" data-filter="kra">KRA / KPI</button>
+                </div>
+
+                <div class="subContent">
+                    <table class="files-table">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Shared With</th>
+                                <th>Shared On</th>
+                                <th>Download</th>
+                            </tr>
+                        </thead>
+                        <tbody id="filesPageBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="pageAnnouncements" class="page-section" style="display:none;">
+            <div class="ann-section navSubsection">
+                <h3>Announcements</h3>
+                <div class="subContent">
+                    <ul id="annPageList" style="padding-left:18px;"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="pageSettings" class="page-section" style="display:none;">
+            <div class="settings-section navSubsection">
+                <h3>Activity Log</h3>
+                <div class="activity-log">
+                    <br>
+                    <div class="subContent">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Task</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityBody"></tbody>
+                        </table>
+                    </div>
+
+                    <button id="clearActivityBtn" class="delete-btn">Clear Activity Log</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="pageAttendance" class="page-section" style="display:none;">
+            <div class="attendance-section navSubsection">
+
+                <div class="wrap-two">
+                    <h3>Attendance</h3>
+
+                    <button id="downloadAttendanceBtn" class="button-full" style="max-width:260px;">
+                        ⬇ Download Attendance Log
+                    </button>
+                </div>
+
+                <div class="subContent">
+                    <table class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Sr</th>
+                                <th>Employee</th>
+                                <th>Date</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Total Hours</th>
+                                <th>Weekly Total</th>
+                                <th>Overtime</th>
+                                <th>Day Type</th>
+                                <th>Late Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminPageApprovals" class="page-section" style="display:none;">
+            <div class="approvals-section navSubsection">
+                <h3>Approval Inbox</h3>
+
+                <!-- TABS -->
+                <div class="approval-tabs">
+                    <button class="approval-tab active" data-status="Pending">Pending</button>
+                    <button class="approval-tab" data-status="Approved">Approved</button>
+                    <button class="approval-tab" data-status="Rejected">Rejected</button>
+                </div>
+
+                <div class="subContent">
+                    <table class="approval-table" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Type</th>
+                                <th>Details</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminApprovalBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDesc"></p>
+
+            <div class="modal-row">
+                <label>Assigned To:</label>
+                <select id="modalEmployee"></select>
+            </div>
+
+            <div class="modal-row">
+                <label>Status:</label>
+                <select id="modalStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
+            <div class="modal-row">
+                <label>Due Date:</label>
+                <input type="date" id="modalDue">
+            </div>
+
+            <div class="modal-buttons">
+                <button id="deleteTaskBtn" class="delete-btn">Delete Task</button>
+                <button id="saveTaskBtn" class="save-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="kraModal" class="modal" style="display:none;">
+        <div class="modal-content" style="width:380px;">
+            <span id="closeKraModal" class="close-modal">&times;</span>
+
+            <h3>Upload KRA / KPI</h3>
+            <p id="kraEmpName" style="margin-bottom:10px;"></p>
+
+            <input type="file" id="kraFileInput">
+            <button id="kraUploadBtn" class="button-full">
+                Upload File
+            </button>
+
+            <p id="kraUploadMsg"></p>
+        </div>
+    </div>
+
+    <!-- GLOBAL LOADER -->
+    <div id="globalLoader" class="loader-overlay" style="display:none;">
+        <div class="dot-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

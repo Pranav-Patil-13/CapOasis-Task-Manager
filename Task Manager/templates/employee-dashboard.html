@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/employee.css') }}">
+</head>
+
+<body>
+
+    <div class="employee-wrapper">
+
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar-admin">
+            <div class="admin-logo">
+                <h2>Task Manager</h2>
+            </div>
+
+            <nav class="admin-nav">
+                <a href="#" id="empNavDashboard" class="active">📊 &nbsp; Dashboard</a>
+                <a href="#" id="empNavTasks">✅ &nbsp; My Tasks <span id="taskBadge" class="nav-badge"
+                        style="display:none;">new</span></a>
+                <a href="#" id="empNavAnnouncements">📢 &nbsp; Announcements <span id="annDot" class="nav-dot"
+                        style="display:none;"></span></a>
+                <a href="#" id="empNavFiles">📁 &nbsp; Files <span id="fileDot" class="nav-dot"
+                        style="display:none;"></span></a>
+                <a href="#" id="empNavAttendance">🕒 &nbsp; My Attendance</a>
+
+                <!-- APPROVALS -->
+                <div class="nav-group">
+                    <a href="#" id="empNavApprovals" class="nav-parent">
+                        📝 &nbsp; Approvals
+                        <span class="nav-dot" style="display:none;"></span>
+                        <span class="nav-arrow">▸</span>
+                    </a>
+
+                    <div class="nav-submenu" id="empApprovalsMenu">
+                        <a href="#" data-approval="leave">Leave</a>
+                        <a href="#" data-approval="regularisation">Regularisation</a>
+                        <a href="#" data-approval="reimbursement">Re-embossment</a>
+                        <a href="#" data-approval="remuneration">Remuneration</a>
+                        <a href="#" data-approval="all">
+                            All Approvals
+                            <span id="allApprovalsDot" class="nav-dot" style="display:none;"></span>
+                        </a>
+                    </div>
+                </div>
+
+
+                <a href="#" id="empNavProfile">👤 &nbsp; Profile</a>
+            </nav>
+
+            <div class="admin-logout">
+                <a href="#" id="empLogout">Logout</a>
+            </div>
+        </aside>
+
+        <!-- ================= CONTENT ================= -->
+        <main class="content-area">
+
+            <div class="dashboard-hero">
+                <h2 id="dashboardGreeting">Hello 👋</h2>
+
+                <div class="rightHead">
+                    <!-- NOTIFICATION BELL -->
+                    <div id="notifBell" class="notif-bell">
+                        🔔
+                        <span id="notifBadge" class="notif-badge" style="display:none;"></span>
+                    </div>
+
+                    <div class="dashboard-user-bar" id="profileCard">
+                        <div class="user-avatar" id="dashAvatar">Hi</div>
+
+                        <div class="user-info">
+                            <div class="user-name" id="dashName">—</div>
+                            <div class="user-email" id="dashEmail">—</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- DASHBOARD -->
+            <section id="empPageDashboard" class="page-section">
+                <div class="dash-grid">
+
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <h2 id="cardTotal">0</h2>
+                            <p>Total Tasks</p>
+                        </div>
+                        <div class="card">
+                            <h2 id="cardPending">0</h2>
+                            <p>Pending</p>
+                        </div>
+                        <div class="card">
+                            <h2 id="cardProgress">0</h2>
+                            <p>In Progress</p>
+                        </div>
+                        <div class="card">
+                            <h2 id="cardCompleted">0</h2>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+
+                    <div class="card attendance-card">
+                        <h3>Attendance</h3>
+
+                        <button id="markAttendance" class="attendance-btn">
+                            Check IN
+                        </button>
+
+                        <button id="checkOutBtn" class="attendance-btn" style="background:#16a34a;">
+                            Check Out
+                        </button>
+
+                        <div id="attendanceStatus" class="attendance-status"></div>
+
+                        <p id="attMsg" class="attendance-msg"></p>
+                    </div>
+
+
+                    <div class="card dash-block">
+                        <h3>Priority Tasks</h3>
+                        <ul id="priorityTasks"></ul>
+                    </div>
+
+                    <div class="card dash-block">
+                        <h3>Task Status</h3>
+
+                        <div class="progress-rings">
+
+                            <div class="ring completed" data-tooltip="">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="bg" d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="progress" stroke-dasharray="0,100" id="ringCompleted" d="M18 2.0845
+                       a 15.9155 15.9155 0 0 1 0 31.831
+                       a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span id="completedPercent">0%</span>
+                                <p>Completed</p>
+                            </div>
+
+                            <div class="ring progress" data-tooltip="">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="bg"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="progress" stroke-dasharray="0,100" id="ringProgress"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span id="progressPercent">0%</span>
+                                <p>In Progress</p>
+                            </div>
+
+                            <div class="ring pending" data-tooltip="">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="bg"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="progress" stroke-dasharray="0,100" id="ringPending"
+                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span id="pendingPercent">0%</span>
+                                <p>Not Started</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card dash-block">
+                        <h3>Top Performers 🏆</h3>
+
+                        <ul id="topPerformers" class="top-performers-list">
+                            <li class="empty">Loading leaderboard...</li>
+                        </ul>
+                    </div>
+
+                    <div class="card dash-block">
+                        <h3>Recent Updates</h3>
+                        <ul id="recentUpdates"></ul>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- TASKS -->
+            <section id="empPageTasks" class="page-section" style="display:none;">
+                <h2>My Tasks</h2>
+
+                <table id="tasksTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Due</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- ANNOUNCEMENTS -->
+            <section id="empPageAnnouncements" class="page-section" style="display:none;">
+                <h2>Announcements</h2>
+                <ul id="announcementsList"></ul>
+            </section>
+
+            <!-- FILES -->
+            <section id="empPageFiles" class="page-section" style="display:none;">
+                <h2>Files</h2>
+                <ul id="filesList"></ul>
+            </section>
+
+
+            <section id="empPageAttendance" class="page-section" style="display:none;">
+                <h2>My Attendance</h2>
+
+                <!-- Summary cards -->
+                <div class="dashboard-cards" style="margin-top:20px;">
+                    <div class="card">
+                        <h2 id="attPresent">0</h2>
+                        <p>Present</p>
+                    </div>
+
+                    <div class="card">
+                        <h2 id="attAbsent">0</h2>
+                        <p>Absent</p>
+                    </div>
+
+                    <div class="card">
+                        <h2 id="attLate">0</h2>
+                        <p>Late</p>
+                    </div>
+
+                    <div class="card">
+                        <h2 id="attTotal">0</h2>
+                        <p>Total Days</p>
+                    </div>
+                </div>
+
+                <!-- Attendance table -->
+                <div class="attendance-table-card">
+                    <table id="attendanceTable" style="margin-top:30px;">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="empPageProfile" class="page-section" style="display:none;">
+                <h2>My Profile</h2>
+
+                <!-- PROFILE CARD -->
+                <div class="profile-card profile-hero">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <span id="empInitials">PP</span>
+                        </div>
+
+                        <div class="profile-main">
+                            <h3 id="empName">—</h3>
+                            <p id="empEmail" class="profile-email">—</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Role</span>
+                            <span class="meta-value" id="empRole">Employee</span>
+                        </div>
+
+                        <div class="meta-item">
+                            <span class="meta-label">Employee ID</span>
+                            <span class="meta-value highlight" id="empId">—</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KRA / KPI FILES -->
+                <div class="profile-card">
+                    <h3>KRA / KPI Documents</h3>
+                    <ul id="kraFilesList"></ul>
+                </div>
+            </section>
+
+
+            <!-- LEAVE APPROVALS -->
+            <section id="empPageLeaveApproval" class="page-section" style="display:none;">
+                <h2>Leave Requests</h2>
+
+                <button class="primary-btn" id="openLeaveModal">+ New Leave Request</button>
+
+                <table class="approval-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Leave Type</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaveTableBody"></tbody>
+                </table>
+            </section>
+
+
+            <section id="empPageAllApprovals" class="page-section" style="display:none;">
+                <h2>My Approvals</h2>
+
+                <!-- FILTER BAR -->
+                <div class="approval-filters">
+                    <select id="approvalTypeFilter">
+                        <option value="all">All Types</option>
+                        <option value="leave">Leave</option>
+                        <option value="regularisation">Regularisation</option>
+                        <option value="reimbursement">Re-embossment</option>
+                        <option value="remuneration">Remuneration</option>
+                    </select>
+
+                    <select id="approvalStatusFilter">
+                        <option value="all">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+
+                    <select id="approvalSort">
+                        <option value="latest">Latest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
+
+                <!-- TIMELINE -->
+                <div id="allApprovalsTimeline"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <!-- GLOBAL LOADER -->
+    <div id="globalLoader" class="loader-overlay" style="display:none;">
+        <div class="dot-loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+
+    <!-- ================= LEAVE REQUEST MODAL ================= -->
+    <div id="leaveModal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+            <h3>New Leave Request</h3>
+
+            <div class="form-group">
+                <label>Leave Type</label>
+                <select id="leaveType">
+                    <option value="">Select</option>
+                    <option>Casual</option>
+                    <option>Sick</option>
+                    <option>Paid</option>
+                    <option>Unpaid</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>From</label>
+                    <input type="date" id="leaveFrom">
+                </div>
+
+                <div class="form-group">
+                    <label>To</label>
+                    <input type="date" id="leaveTo">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Send To</label>
+                <select id="leaveAdmin">
+                    <option value="">Select Approver</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Reason</label>
+                <textarea id="leaveReason" rows="3" placeholder="Reason for leave..."></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button class="secondary-btn" id="closeLeaveModal">Cancel</button>
+                <button class="primary-btn" id="submitLeave">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= NOTIFICATION DRAWER ================= -->
+    <div id="notificationDrawer" class="notif-drawer">
+
+        <div class="notif-header">
+            <h3>Notifications</h3>
+            <button id="closeNotifDrawer">✕</button>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="notif-filters">
+            <select id="drawerNotifType">
+                <option value="all">All</option>
+                <option value="task">Tasks</option>
+                <option value="approval">Approvals</option>
+                <option value="attendance">Attendance</option>
+                <option value="file">Files</option>
+                <option value="announcement">Announcements</option>
+            </select>
+
+            <button id="drawerMarkRead" class="secondary-btn">
+                Mark all read
+            </button>
+        </div>
+
+        <!-- TIMELINE -->
+        <div class="notif-body">
+
+            <div class="notif-date">Today</div>
+
+            <div class="notif-card unread">
+                <div class="notif-icon task">📝</div>
+
+                <div class="notif-content">
+                    <div class="notif-title">New task assigned</div>
+                    <div class="notif-message">
+                        Website UI Revamp · by Anurag
+                    </div>
+                    <div class="notif-meta">
+                        <span>5 min ago</span>
+                        <span class="notif-tag">Task</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notif-card">
+                <div class="notif-icon approval">✅</div>
+
+                <div class="notif-content">
+                    <div class="notif-title">Leave approved</div>
+                    <div class="notif-message">
+                        21 Dec leave approved
+                    </div>
+                    <div class="notif-meta">
+                        <span>Yesterday</span>
+                        <span class="notif-tag approved">Approval</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- BACKDROP -->
+    <div id="notifBackdrop" class="notif-backdrop" style="display:none;"></div>
+
+    <script src="{{ url_for('static', filename='js/employee.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
